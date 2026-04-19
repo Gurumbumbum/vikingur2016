@@ -8,14 +8,9 @@ const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
     console.log("Starting scraper...");
 
     // -----------------------------
-    // 1. LOAD GOOGLE CREDENTIALS
+    // 1. GOOGLE CREDENTIALS (GitHub Secret)
     // -----------------------------
     const creds = JSON.parse(process.env.GOOGLE_CREDENTIALS);
-
-    const serviceAccountAuth = {
-      client_email: creds.client_email,
-      private_key: creds.private_key.replace(/\\n/g, '\n'),
-    };
 
     // -----------------------------
     // 2. SCRAPE KSÍ
@@ -41,17 +36,21 @@ const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
     console.log("Matches found:", rows.length);
 
     // -----------------------------
-    // 3. CONNECT TO GOOGLE SHEETS
+    // 3. CONNECT TO GOOGLE SHEETS (NEW API)
     // -----------------------------
     const doc = new GoogleSpreadsheet(SHEET_ID);
 
-    await doc.useServiceAccountAuth(serviceAccountAuth);
+    await doc.useServiceAccountAuth({
+      client_email: creds.client_email,
+      private_key: creds.private_key.replace(/\\n/g, '\n'),
+    });
+
     await doc.loadInfo();
 
     const sheet = doc.sheetsByIndex[0];
 
-    // Clear old data
-    await sheet.clearRows();
+    // Clear old data (new API safe method)
+    await sheet.clear();
 
     // Set headers
     await sheet.setHeaderRow([
@@ -80,6 +79,7 @@ const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
     }
 
     console.log("Google Sheet updated successfully");
+
   } catch (err) {
     console.error("SCRAPER ERROR:", err);
     process.exit(1);
