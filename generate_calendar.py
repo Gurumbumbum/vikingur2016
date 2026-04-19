@@ -2,7 +2,7 @@ import requests
 import csv
 from datetime import datetime
 
-CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTKGm68TxaqhiVGe9Q37iDbt6sbPbltuwJlDcKziPNt0Ut4dBnlcn_DauwnlzmjkmGF_JwSf1PF_k5X/pub?gid=0&single=true&output=csv"
+CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTKGm68TxaqhiVGe9Q37iDbt6sbPbltuwJlDcKziPNt0Ut4dBnlcn_DauwnlzmjkmGF_JwSf1PF_k5X/pub?output=csv"
 
 data = requests.get(CSV_URL).text
 rows = csv.reader(data.splitlines())
