@@ -1,36 +1,23 @@
-name: KSÍ Scraper
+- uses: actions/checkout@v4
 
-on:
-  schedule:
-    - cron: "0 6 * * *"
-  workflow_dispatch:
+- name: Setup Node
+  uses: actions/setup-node@v4
+  with:
+    node-version: 20
 
-jobs:
-  scrape:
-    runs-on: ubuntu-latest
+- name: Install dependencies (persistent)
+  run: npm install
 
-    defaults:
-      run:
-        working-directory: .
+- name: Install missing packages explicitly
+  run: npm install playwright google-spreadsheet
 
-    steps:
-      - uses: actions/checkout@v4
+- name: Verify install
+  run: node -e "console.log(require('google-spreadsheet'))"
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+- name: Install Playwright browsers
+  run: npx playwright install
 
-      - name: Install dependencies
-        run: npm install playwright google-spreadsheet
-
-      - name: Install Playwright browsers
-        run: npx playwright install
-
-      - name: Debug node_modules
-        run: ls node_modules | grep google
-
-      - name: Run scraper
-        run: node scraper.js
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+- name: Run scraper
+  run: node scraper.js
+  env:
+    GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
