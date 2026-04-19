@@ -1,9 +1,22 @@
-- name: Setup project
-  run: |
-    ls -la
-    npm init -y
-    npm install playwright google-spreadsheet
-    npx playwright install
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
 
-- name: Run scraper
-  run: node scraper.js
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: |
+          npm init -y
+          npm install playwright google-spreadsheet
+
+      - name: Install Playwright browsers
+        run: npx playwright install
+
+      - name: Run scraper
+        run: node scraper.js
