@@ -1,25 +1,36 @@
-- uses: actions/checkout@v4
+name: KSÍ Scraper
 
-- name: Setup Node
-  uses: actions/setup-node@v4
-  with:
-    node-version: 20
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
 
-- name: Show files (debug)
-  run: ls -la
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
 
-- name: Install dependencies
-  run: |
-    npm init -y
-    npm install playwright google-spreadsheet
+    defaults:
+      run:
+        working-directory: .
 
-- name: Verify installation
-  run: ls node_modules | grep google
+    steps:
+      - uses: actions/checkout@v4
 
-- name: Install Playwright browsers
-  run: npx playwright install
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-- name: Run scraper
-  run: node scraper.js
-  env:
-    GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+      - name: Install dependencies
+        run: npm install playwright google-spreadsheet
+
+      - name: Install Playwright browsers
+        run: npx playwright install
+
+      - name: Debug node_modules
+        run: ls node_modules | grep google
+
+      - name: Run scraper
+        run: node scraper.js
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
