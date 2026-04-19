@@ -1,5 +1,9 @@
-- name: Setup Node modules
+- name: Setup project
   run: |
+    ls -la
     npm init -y
     npm install playwright google-spreadsheet
     npx playwright install
+
+- name: Run scraper
+  run: node scraper.js
