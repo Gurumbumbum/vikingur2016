@@ -7,14 +7,14 @@ const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
   try {
     console.log("Starting scraper...");
 
-    // -----------------------------
-    // 1. GOOGLE CREDENTIALS (GitHub Secret)
-    // -----------------------------
+    // -----------------------
+    // Google credentials
+    // -----------------------
     const creds = JSON.parse(process.env.GOOGLE_CREDENTIALS);
 
-    // -----------------------------
-    // 2. SCRAPE KSÍ
-    // -----------------------------
+    // -----------------------
+    // Scrape KSÍ
+    // -----------------------
     const browser = await chromium.launch();
     const page = await browser.newPage();
 
@@ -35,9 +35,9 @@ const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
 
     console.log("Matches found:", rows.length);
 
-    // -----------------------------
-    // 3. CONNECT TO GOOGLE SHEETS (NEW API)
-    // -----------------------------
+    // -----------------------
+    // Google Sheets
+    // -----------------------
     const doc = new GoogleSpreadsheet(SHEET_ID);
 
     await doc.useServiceAccountAuth({
@@ -49,10 +49,8 @@ const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
 
     const sheet = doc.sheetsByIndex[0];
 
-    // Clear old data (new API safe method)
     await sheet.clear();
 
-    // Set headers
     await sheet.setHeaderRow([
       "DateTime",
       "Competition",
@@ -60,22 +58,18 @@ const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
       "Away"
     ]);
 
-    // -----------------------------
-    // 4. WRITE DATA
-    // -----------------------------
+    // -----------------------
+    // Write data
+    // -----------------------
     for (const r of rows) {
       if (!r || r.length < 5) continue;
 
-      try {
-        await sheet.addRow({
-          DateTime: r[0],
-          Competition: r[1],
-          Home: r[2],
-          Away: r[4]
-        });
-      } catch (err) {
-        console.log("Skipping row:", r);
-      }
+      await sheet.addRow({
+        DateTime: r[0],
+        Competition: r[1],
+        Home: r[2],
+        Away: r[4]
+      });
     }
 
     console.log("Google Sheet updated successfully");
