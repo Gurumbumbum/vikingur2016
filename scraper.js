@@ -1,66 +1,87 @@
 const { chromium } = require('playwright');
 const { GoogleSpreadsheet } = require('google-spreadsheet');
-const creds = JSON.parse(process.env.GOOGLE_CREDENTIALS);
 
-// YOUR SHEET ID
 const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
 
 (async () => {
-  // 1. SCRAPE KSÍ
-  const browser = await chromium.launch();
-  const page = await browser.newPage();
+  try {
+    console.log("Starting scraper...");
 
-  const url =
-    "https://www.ksi.is/leikir-felaga/felagslid/?club=2492&category=Fullor%C3%B0nir&dateFrom=2026-01-01&dateTo=2026-12-31";
+    // -----------------------------
+    // 1. LOAD GOOGLE CREDENTIALS
+    // -----------------------------
+    const creds = JSON.parse(process.env.GOOGLE_CREDENTIALS);
 
-  await page.goto(url, { waitUntil: "networkidle" });
-  await page.waitForTimeout(5000);
+    const serviceAccountAuth = {
+      client_email: creds.client_email,
+      private_key: creds.private_key.replace(/\\n/g, '\n'),
+    };
 
-  const rows = await page.$$eval("table tbody tr", trs =>
-    trs.map(tr => {
-      const tds = tr.querySelectorAll("td");
-      return Array.from(tds).map(td => td.innerText.trim());
-    })
-  );
+    // -----------------------------
+    // 2. SCRAPE KSÍ
+    // -----------------------------
+    const browser = await chromium.launch();
+    const page = await browser.newPage();
 
-  await browser.close();
+    const url =
+      "https://www.ksi.is/leikir-felaga/felagslid/?club=2492&category=Fullor%C3%B0nir&dateFrom=2026-01-01&dateTo=2026-12-31";
 
-  console.log("Matches found:", rows.length);
+    await page.goto(url, { waitUntil: "networkidle" });
+    await page.waitForTimeout(5000);
 
-  // 2. CONNECT TO GOOGLE SHEETS
-  const doc = new GoogleSpreadsheet(SHEET_ID);
+    const rows = await page.$$eval("table tbody tr", trs =>
+      trs.map(tr => {
+        const tds = tr.querySelectorAll("td");
+        return Array.from(tds).map(td => td.innerText.trim());
+      })
+    );
 
-  await doc.useServiceAccountAuth(creds);
-  await doc.loadInfo();
+    await browser.close();
 
-  const sheet = doc.sheetsByIndex[0];
+    console.log("Matches found:", rows.length);
 
-  // clear old data
-  await sheet.clearRows();
+    // -----------------------------
+    // 3. CONNECT TO GOOGLE SHEETS
+    // -----------------------------
+    const doc = new GoogleSpreadsheet(SHEET_ID);
 
-  // headers
-  await sheet.setHeaderRow([
-    "DateTime",
-    "Competition",
-    "Home",
-    "Away"
-  ]);
+    await doc.useServiceAccountAuth(serviceAccountAuth);
+    await doc.loadInfo();
 
-  // 3. WRITE DATA
-  for (const r of rows) {
-    if (r.length < 5) continue;
+    const sheet = doc.sheetsByIndex[0];
 
-    try {
-      await sheet.addRow({
-        DateTime: r[0],
-        Competition: r[1],
-        Home: r[2],
-        Away: r[4]
-      });
-    } catch (err) {
-      console.log("Skipping row:", r, err.message);
+    // Clear old data
+    await sheet.clearRows();
+
+    // Set headers
+    await sheet.setHeaderRow([
+      "DateTime",
+      "Competition",
+      "Home",
+      "Away"
+    ]);
+
+    // -----------------------------
+    // 4. WRITE DATA
+    // -----------------------------
+    for (const r of rows) {
+      if (!r || r.length < 5) continue;
+
+      try {
+        await sheet.addRow({
+          DateTime: r[0],
+          Competition: r[1],
+          Home: r[2],
+          Away: r[4]
+        });
+      } catch (err) {
+        console.log("Skipping row:", r);
+      }
     }
-  }
 
-  console.log("Google Sheet updated successfully");
+    console.log("Google Sheet updated successfully");
+  } catch (err) {
+    console.error("SCRAPER ERROR:", err);
+    process.exit(1);
+  }
 })();
