@@ -1,23 +1,25 @@
 - uses: actions/checkout@v4
 
-- name: Show repo files
-  run: ls -la
-
 - name: Setup Node
   uses: actions/setup-node@v4
   with:
     node-version: 20
 
-- name: Init project + install dependencies
+- name: Show files (debug)
+  run: ls -la
+
+- name: Install dependencies
   run: |
     npm init -y
     npm install playwright google-spreadsheet
 
-- name: Confirm installation
-  run: ls node_modules | head
+- name: Verify installation
+  run: ls node_modules | grep google
 
 - name: Install Playwright browsers
   run: npx playwright install
 
 - name: Run scraper
   run: node scraper.js
+  env:
+    GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
