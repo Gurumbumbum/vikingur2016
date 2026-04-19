@@ -7,13 +7,10 @@ const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
   try {
     console.log("Starting scraper...");
 
-    // -----------------------
-    // Load credentials
-    // -----------------------
     const creds = JSON.parse(process.env.GOOGLE_CREDENTIALS);
 
     // -----------------------
-    // SCRAPE KSÍ
+    // SCRAPE KSÍ (already filtered to Víkingur)
     // -----------------------
     const browser = await chromium.launch();
     const page = await browser.newPage();
@@ -33,10 +30,22 @@ const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
 
     await browser.close();
 
-    console.log("Matches found:", rows.length);
+    console.log("Raw rows:", rows.length);
 
     // -----------------------
-    // GOOGLE SHEETS (v3 API - WORKING)
+    // FILTER ONLY REAL MATCH ROWS
+    // -----------------------
+    const matches = rows.filter(r =>
+      r &&
+      r.length >= 4 &&
+      r[0] && r[0].length > 3 &&   // date exists
+      r[1] && r[2] && r[3]         // teams exist
+    );
+
+    console.log("Clean matches:", matches.length);
+
+    // -----------------------
+    // GOOGLE SHEETS
     // -----------------------
     const doc = new GoogleSpreadsheet(SHEET_ID);
 
@@ -52,7 +61,7 @@ const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
     await sheet.clear();
 
     await sheet.setHeaderRow([
-      "DateTime",
+      "Date",
       "Competition",
       "Home",
       "Away"
@@ -61,14 +70,12 @@ const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
     // -----------------------
     // WRITE DATA
     // -----------------------
-    for (const r of rows) {
-      if (!r || r.length < 5) continue;
-
+    for (const m of matches) {
       await sheet.addRow({
-        DateTime: r[0],
-        Competition: r[1],
-        Home: r[2],
-        Away: r[4]
+        Date: m[0] || "",
+        Competition: m[1] || "",
+        Home: m[2] || "",
+        Away: m[3] || ""
       });
     }
 
