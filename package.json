@@ -1,2 +1,10 @@
-- name: Init project
-  run: npm init -y
+{
+  "name": "ksi-scraper",
+  "version": "1.0.0",
+  "main": "scraper.js",
+  "type": "commonjs",
+  "dependencies": {
+    "playwright": "^1.0.0",
+    "google-spreadsheet": "^4.1.4"
+  }
+}
