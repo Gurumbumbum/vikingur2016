@@ -9,36 +9,42 @@ const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
 
     const creds = JSON.parse(process.env.GOOGLE_CREDENTIALS);
 
-    const browser = await chromium.launch();
+    const browser = await chromium.launch({
+      headless: true
+    });
+
     const page = await browser.newPage();
 
     const url =
       "https://www.ksi.is/leikir-felaga/felagslid/?club=2492&category=Fullor%C3%B0nir&dateFrom=2026-01-01&dateTo=2026-12-31";
 
-    await page.goto(url, { waitUntil: "networkidle" });
+    await page.goto(url, { waitUntil: "domcontentloaded" });
 
-    // 🔥 IMPORTANT: wait for actual table rows
-    await page.waitForSelector("tr", { timeout: 15000 });
+    // 🔥 WAIT FOR REAL CONTENT (IMPORTANT FIX)
+    await page.waitForTimeout(10000);
 
-    const rows = await page.$$eval("tr", trs =>
-      trs.map(tr => {
-        const tds = tr.querySelectorAll("td");
-        return Array.from(tds).map(td => td.innerText.trim());
-      })
-    );
+    // 🔥 DEBUG: confirm page is actually loaded
+    const title = await page.title();
+    console.log("Page title:", title);
 
-    console.log("Raw rows scraped:", rows.length);
+    const rows = await page.evaluate(() => {
+      const trs = document.querySelectorAll("tr");
 
-    // 🔥 KEEP ONLY REAL DATA ROWS
-    const matches = rows.filter(r =>
-      r &&
-      r.length >= 4 &&
-      r.some(cell => cell && cell.length > 3)
-    );
-
-    console.log("Valid matches:", matches.length);
+      return Array.from(trs)
+        .map(tr => {
+          const tds = tr.querySelectorAll("td");
+          return Array.from(tds).map(td => td.innerText.trim());
+        })
+        .filter(r => r && r.length >= 4);
+    });
 
     await browser.close();
+
+    console.log("Rows found:", rows.length);
+
+    if (rows.length === 0) {
+      console.log("❌ No data found — page is JS-rendered or blocked.");
+    }
 
     // -----------------------
     // GOOGLE SHEETS
@@ -63,10 +69,7 @@ const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
       "Away"
     ]);
 
-    // -----------------------
-    // WRITE DATA
-    // -----------------------
-    for (const r of matches) {
+    for (const r of rows) {
       await sheet.addRow({
         Date: r[0] || "",
         Competition: r[1] || "",
