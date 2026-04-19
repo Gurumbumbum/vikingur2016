@@ -1,6 +1,6 @@
 const { chromium } = require('playwright');
 const { GoogleSpreadsheet } = require('google-spreadsheet');
-const creds = require('./credentials.json');
+const creds = JSON.parse(process.env.GOOGLE_CREDENTIALS);
 
 // YOUR SHEET ID
 const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
