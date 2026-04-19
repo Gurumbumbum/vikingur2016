@@ -1,22 +1,16 @@
-jobs:
-  scrape:
-    runs-on: ubuntu-latest
+- name: Show folder (debug)
+  run: ls -la
 
-    steps:
-      - uses: actions/checkout@v4
+- name: Ensure clean install
+  run: |
+    npm init -y
+    npm install playwright google-spreadsheet
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+- name: Verify install worked
+  run: ls node_modules | grep google
 
-      - name: Install dependencies
-        run: |
-          npm init -y
-          npm install playwright google-spreadsheet
+- name: Install Playwright browsers
+  run: npx playwright install
 
-      - name: Install Playwright browsers
-        run: npx playwright install
-
-      - name: Run scraper
-        run: node scraper.js
+- name: Run scraper
+  run: node scraper.js
