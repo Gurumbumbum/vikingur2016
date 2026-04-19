@@ -3,48 +3,48 @@ const { GoogleSpreadsheet } = require('google-spreadsheet');
 
 const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
 
+function isValidMatch(text) {
+  const t = text.toLowerCase();
+
+  // must include Vikingur
+  if (!t.includes("víkingur")) return false;
+
+  // must include at least one opponent (basic filter: letters > numbers)
+  const hasOpponent =
+    /[a-záéíóúþæðö]/i.test(text.replace(/víkingur/gi, ""));
+
+  return hasOpponent;
+}
+
 (async () => {
   try {
     console.log("Starting scraper...");
 
     const creds = JSON.parse(process.env.GOOGLE_CREDENTIALS);
 
-    const browser = await chromium.launch({
-      headless: true
-    });
-
+    const browser = await chromium.launch();
     const page = await browser.newPage();
 
     const url =
       "https://www.ksi.is/leikir-felaga/felagslid/?club=2492&category=Fullor%C3%B0nir&dateFrom=2026-01-01&dateTo=2026-12-31";
 
     await page.goto(url, { waitUntil: "domcontentloaded" });
-
-    // 🔥 WAIT FOR REAL CONTENT (IMPORTANT FIX)
-    await page.waitForTimeout(10000);
-
-    // 🔥 DEBUG: confirm page is actually loaded
-    const title = await page.title();
-    console.log("Page title:", title);
+    await page.waitForTimeout(8000);
 
     const rows = await page.evaluate(() => {
-      const trs = document.querySelectorAll("tr");
-
-      return Array.from(trs)
-        .map(tr => {
-          const tds = tr.querySelectorAll("td");
-          return Array.from(tds).map(td => td.innerText.trim());
-        })
-        .filter(r => r && r.length >= 4);
+      return Array.from(document.querySelectorAll("tr"))
+        .map(tr => tr.innerText.trim())
+        .filter(t => t && t.length > 3);
     });
 
     await browser.close();
 
-    console.log("Rows found:", rows.length);
+    console.log("Total rows:", rows.length);
 
-    if (rows.length === 0) {
-      console.log("❌ No data found — page is JS-rendered or blocked.");
-    }
+    // 🔥 KEEP ONLY VÍKINGUR MATCHES
+    const matches = rows.filter(isValidMatch);
+
+    console.log("Víkingur matches found:", matches.length);
 
     // -----------------------
     // GOOGLE SHEETS
@@ -63,18 +63,12 @@ const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
     await sheet.clear();
 
     await sheet.setHeaderRow([
-      "Date",
-      "Competition",
-      "Home",
-      "Away"
+      "Match"
     ]);
 
-    for (const r of rows) {
+    for (const m of matches) {
       await sheet.addRow({
-        Date: r[0] || "",
-        Competition: r[1] || "",
-        Home: r[2] || "",
-        Away: r[3] || ""
+        Match: m
       });
     }
 
