@@ -36,11 +36,10 @@ const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
     console.log("Matches found:", rows.length);
 
     // -----------------------
-    // GOOGLE SHEETS (FIXED API v4)
+    // GOOGLE SHEETS (v3 API - WORKING)
     // -----------------------
     const doc = new GoogleSpreadsheet(SHEET_ID);
 
-    // NEW METHOD (this replaces useServiceAccountAuth)
     await doc.useServiceAccountAuth({
       client_email: creds.client_email,
       private_key: creds.private_key.replace(/\\n/g, '\n'),
@@ -50,10 +49,8 @@ const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
 
     const sheet = doc.sheetsByIndex[0];
 
-    // Clear old data
     await sheet.clear();
 
-    // Set headers
     await sheet.setHeaderRow([
       "DateTime",
       "Competition",
