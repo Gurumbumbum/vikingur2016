@@ -3,26 +3,12 @@ const { GoogleSpreadsheet } = require('google-spreadsheet');
 
 const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
 
-function cleanRow(r) {
-  if (!r || r.length < 3) return null;
-
-  return {
-    Date: r[0] || "",
-    Competition: r[1] || "",
-    Home: r[2] || "",
-    Away: r[r.length - 1] || ""
-  };
-}
-
 (async () => {
   try {
     console.log("Starting scraper...");
 
     const creds = JSON.parse(process.env.GOOGLE_CREDENTIALS);
 
-    // -----------------------
-    // SCRAPE KSÍ
-    // -----------------------
     const browser = await chromium.launch();
     const page = await browser.newPage();
 
@@ -30,34 +16,29 @@ function cleanRow(r) {
       "https://www.ksi.is/leikir-felaga/felagslid/?club=2492&category=Fullor%C3%B0nir&dateFrom=2026-01-01&dateTo=2026-12-31";
 
     await page.goto(url, { waitUntil: "networkidle" });
-    await page.waitForTimeout(5000);
 
-    const rows = await page.$$eval("table tbody tr", trs =>
+    // 🔥 IMPORTANT: wait for actual table rows
+    await page.waitForSelector("tr", { timeout: 15000 });
+
+    const rows = await page.$$eval("tr", trs =>
       trs.map(tr => {
         const tds = tr.querySelectorAll("td");
         return Array.from(tds).map(td => td.innerText.trim());
       })
     );
 
-    await browser.close();
+    console.log("Raw rows scraped:", rows.length);
 
-    console.log("Raw rows:", rows.length);
-
-    // -----------------------
-    // CLEAN ROWS (NO OVER-FILTERING)
-    // -----------------------
-    const matches = rows
-      .map(cleanRow)
-      .filter(r =>
-        r &&
-        r.Date &&
-        r.Competition &&
-        r.Home &&
-        r.Away &&
-        r.Date.length > 5
-      );
+    // 🔥 KEEP ONLY REAL DATA ROWS
+    const matches = rows.filter(r =>
+      r &&
+      r.length >= 4 &&
+      r.some(cell => cell && cell.length > 3)
+    );
 
     console.log("Valid matches:", matches.length);
+
+    await browser.close();
 
     // -----------------------
     // GOOGLE SHEETS
@@ -85,8 +66,13 @@ function cleanRow(r) {
     // -----------------------
     // WRITE DATA
     // -----------------------
-    for (const m of matches) {
-      await sheet.addRow(m);
+    for (const r of matches) {
+      await sheet.addRow({
+        Date: r[0] || "",
+        Competition: r[1] || "",
+        Home: r[2] || "",
+        Away: r[3] || ""
+      });
     }
 
     console.log("Google Sheet updated successfully");
