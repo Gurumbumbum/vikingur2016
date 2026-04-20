@@ -1,16 +1,7 @@
-const fetch = require("node-fetch");
-
-(async () => {
-  const res = await fetch("https://bestadeildin.is/API/ksi_leikir.php?deild=karla");
-  const data = await res.text();
-
-  console.log("RAW RESPONSE:");
-  console.log(data.slice(0, 1000));
-})();
-const fetch = require("node-fetch");
 const { GoogleSpreadsheet } = require("google-spreadsheet");
 
 const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
+const VIKINGUR_ID = 5364; // Based on observed API data
 
 (async () => {
   try {
@@ -22,30 +13,30 @@ const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
     );
 
     const data = await res.json();
-
     console.log("Total matches from API:", data.length);
 
     // 2. FILTER VÍKINGUR MATCHES
     const vikingurMatches = data.filter(match => {
-      const home = (match.home || "").toLowerCase();
-      const away = (match.away || "").toLowerCase();
+      // Check if it's a Víkingur match using ID or description
+      const isVikingurHome = match.homeTeam === VIKINGUR_ID;
+      const isVikingurAway = match.awayTeam === VIKINGUR_ID;
+      const descMatches = (match.matchDescription || "").toLowerCase().includes("víkingur");
 
-      return (
-        home.includes("víkingur") ||
-        away.includes("víkingur")
-      );
+      return isVikingurHome || isVikingurAway || descMatches;
     });
 
     console.log("Víkingur matches found:", vikingurMatches.length);
 
     if (vikingurMatches.length === 0) {
-      console.log("No matches found — check API structure.");
+      console.log("No matches found — check if API structure changed or Víkingur ID is correct.");
       return;
     }
 
     // 3. GOOGLE SHEETS AUTH
+    if (!process.env.GOOGLE_CREDENTIALS) {
+      throw new Error("Missing GOOGLE_CREDENTIALS environment variable");
+    }
     const creds = JSON.parse(process.env.GOOGLE_CREDENTIALS);
-
     const doc = new GoogleSpreadsheet(SHEET_ID);
 
     await doc.useServiceAccountAuth({
@@ -54,25 +45,47 @@ const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
     });
 
     await doc.loadInfo();
-
     const sheet = doc.sheetsByIndex[0];
 
     await sheet.clear();
-
     await sheet.setHeaderRow([
       "Date",
       "Home",
       "Away",
+      "Location",
       "Competition"
     ]);
 
     // 4. WRITE DATA
     for (const match of vikingurMatches) {
+      // Parse matchDescription for names if homeTeam/awayTeam are just IDs
+      // Description format: "Home - Away Result"
+      let home = "Unknown";
+      let away = "Unknown";
+      
+      const desc = match.matchDescription || "";
+      const teamPart = desc.split(/[0-9:]/)[0]; // Get everything before the score
+      if (teamPart.includes("-")) {
+        const parts = teamPart.split("-").map(s => s.trim());
+        home = parts[0] || "Unknown";
+        away = parts[1] || "Unknown";
+      }
+
+      // Format date
+      const dt = new Date(match.matchDate);
+      const day = String(dt.getDate()).padStart(2, '0');
+      const month = String(dt.getMonth() + 1).padStart(2, '0');
+      const year = dt.getFullYear();
+      const hours = String(dt.getHours()).padStart(2, '0');
+      const minutes = String(dt.getMinutes()).padStart(2, '0');
+      const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
+
       await sheet.addRow({
-        Date: match.date || match.time || "",
-        Home: match.home || "",
-        Away: match.away || "",
-        Competition: match.competition || ""
+        Date: formattedDate,
+        Home: home,
+        Away: away,
+        Location: match.facility || "",
+        Competition: match.name || ""
       });
     }
 
