@@ -1,12 +1,12 @@
 const { GoogleSpreadsheet } = require("google-spreadsheet");
 
 const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
-const VIKINGUR_ID = 5364; 
+const VIKINGUR_ID = 5364; // Víkingur Reykjavík
 
-// List of API endpoints to fetch from to ensure full coverage (Leagues, Cup, etc.)
+// List of API endpoints to fetch from to ensure full coverage
 const ENDPOINTS = [
   "https://bestadeildin.is/API/ksi_leikir.php?deild=karla",      // General Men's leagues
-  "https://bestadeildin.is/API/ksi_leikir.php?felag=5364",       // All Víkingur club matches
+  "https://bestadeildin.is/API/ksi_leikir.php?felag=5364",       // All Víkingur R. club matches
   "https://bestadeildin.is/API/ksi_leikir.php?id=7059683",       // Mjólkurbikarinn 2026 (Cup)
   "https://bestadeildin.is/API/ksi_leikir.php?id=7025605",       // Meistarakeppni 2026 (Super Cup)
 ];
@@ -24,13 +24,18 @@ const ENDPOINTS = [
         console.log(`Fetched ${data.length} matches from: ${url}`);
 
         for (const match of data) {
-          // Check if it's a Víkingur match
+          // Check if it's a Víkingur REYKJAVÍK match
           const isVikingurHome = match.homeTeam === VIKINGUR_ID;
           const isVikingurAway = match.awayTeam === VIKINGUR_ID;
-          const descMatches = (match.matchDescription || "").toLowerCase().includes("víkingur");
+          
+          // Refined text search: must include "Víkingur R" or NOT include "Ó."
+          const desc = (match.matchDescription || "").toLowerCase();
+          const mentionsVikingur = desc.includes("víkingur");
+          const mentionsReykjavik = desc.includes("víkingur r.");
+          const isOlafsvik = desc.includes("víkingur ó.") || desc.includes("víkingur ólafs");
 
-          if (isVikingurHome || isVikingurAway || descMatches) {
-            // Use matchId or id as a unique key for deduplication
+          // We include if IDs match OR (it mentions Víkingur AND is not Ólafsvík)
+          if (isVikingurHome || isVikingurAway || (mentionsVikingur && !isOlafsvik)) {
             const key = match.matchId || match.id || `${match.matchDate}-${match.matchDescription}`;
             allMatchesMap.set(key, match);
           }
@@ -43,7 +48,7 @@ const ENDPOINTS = [
     const vikingurMatches = Array.from(allMatchesMap.values())
       .sort((a, b) => a.matchDate - b.matchDate);
 
-    console.log(`Total unique Víkingur matches found: ${vikingurMatches.length}`);
+    console.log(`Total unique Víkingur R. matches found: ${vikingurMatches.length}`);
 
     if (vikingurMatches.length === 0) {
       console.log("No matches found.");
@@ -87,7 +92,6 @@ const ENDPOINTS = [
         home = parts[0] || "Unknown";
         away = parts[1] || "Unknown";
       } else {
-          // Fallback if no " - " separator
           home = namesOnly;
       }
 
@@ -108,7 +112,7 @@ const ENDPOINTS = [
       });
     }
 
-    console.log("Google Sheet updated successfully with expanded coverage.");
+    console.log("Google Sheet updated (filtered for Víkingur R. only).");
 
   } catch (err) {
     console.error("ERROR:", err);
