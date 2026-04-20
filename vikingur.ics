@@ -6,408 +6,408 @@ METHOD:PUBLISH
 X-WR-CALNAME:Víkingur R. Leikir
 X-WR-TIMEZONE:UTC
 BEGIN:VEVENT
-UID:9f45efcef40b2b4e479d2fde194f404e@vikingur.ics
-DTSTAMP:20260420T115229
+UID:2957ff385e00de330f781f2f846fb8ce@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260329T140000
 DTEND:20260329T160000
-SUMMARY:VÃ­kingur R. vs Vestri
-LOCATION:VÃ­kingsvÃ¶llur
-DESCRIPTION:Meistarakeppni KSÃ - Meistaraflokkur karla
+SUMMARY:Víkingur R. vs Vestri
+LOCATION:Víkingsvöllur
+DESCRIPTION:Meistarakeppni KSÍ - Meistaraflokkur karla
 END:VEVENT
 BEGIN:VEVENT
-UID:35096ed51b4a03b4de5ea9529d3f0fd2@vikingur.ics
-DTSTAMP:20260420T115229
+UID:26733f36f7cc75798962610136b9e1a4@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260410T191500
 DTEND:20260410T211500
-SUMMARY:VÃ­kingur R. vs BreiÃ°ablik
-LOCATION:VÃ­kingsvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - Besta deild karla
+SUMMARY:Víkingur R. vs Breiðablik
+LOCATION:Víkingsvöllur
+DESCRIPTION:Íslandsmót KSÍ - Besta deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:6af5100f00c29f8372c46197f976d20e@vikingur.ics
-DTSTAMP:20260420T115229
+UID:493f94f008c069e5728919d38faa64a2@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260417T173000
 DTEND:20260417T193000
-SUMMARY:KA vs VÃ­kingur R.
-LOCATION:GreifavÃ¶llurinn
-DESCRIPTION:ÃslandsmÃ³t KSÃ - Besta deild karla
+SUMMARY:KA vs Víkingur R.
+LOCATION:Greifavöllurinn
+DESCRIPTION:Íslandsmót KSÍ - Besta deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:85726439203afde14d77103decc5b137@vikingur.ics
-DTSTAMP:20260420T115229
+UID:0e96121d35ca5c753ee517f4d483b91e@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260423T191500
 DTEND:20260423T211500
-SUMMARY:VÃ­kingur R. vs Stjarnan
-LOCATION:VÃ­kingsvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - Besta deild karla
+SUMMARY:Víkingur R. vs Stjarnan
+LOCATION:Víkingsvöllur
+DESCRIPTION:Íslandsmót KSÍ - Besta deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:38b32d3e79ca881ae1e9f8be3cb0cdb9@vikingur.ics
-DTSTAMP:20260420T115229
+UID:742fdaf00b948c3f77b22550471ff5ad@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260427T191500
 DTEND:20260427T211500
-SUMMARY:VÃ­kingur R. vs ÃA
-LOCATION:VÃ­kingsvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - Besta deild karla
+SUMMARY:Víkingur R. vs ÍA
+LOCATION:Víkingsvöllur
+DESCRIPTION:Íslandsmót KSÍ - Besta deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:72d527eedc9eaaed17159228f6aaa6f9@vikingur.ics
-DTSTAMP:20260420T115229
+UID:0b7efce53a6b4496b4f1acae535dd602@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260503T180000
 DTEND:20260503T200000
-SUMMARY:KeflavÃ­k vs VÃ­kingur R.
-LOCATION:HS Orku vÃ¶llurinn
-DESCRIPTION:ÃslandsmÃ³t KSÃ - Besta deild karla
+SUMMARY:Keflavík vs Víkingur R.
+LOCATION:HS Orku völlurinn
+DESCRIPTION:Íslandsmót KSÍ - Besta deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:683f653b354a927fd27c9da4a86c633d@vikingur.ics
-DTSTAMP:20260420T115229
+UID:afe7af2576f475b5a80454c29fadc471@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260508T173000
 DTEND:20260508T193000
-SUMMARY:VÃ­kingur R. vs ÃÃ³r
-LOCATION:VÃ­kingsvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - Besta deild karla
+SUMMARY:Víkingur R. vs Þór
+LOCATION:Víkingsvöllur
+DESCRIPTION:Íslandsmót KSÍ - Besta deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:61b59e54cc55f6ec7e91651fb770b8e1@vikingur.ics
-DTSTAMP:20260420T115229
+UID:c2e3a279d1fcb841c8574d9329bd5aed@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260517T160000
 DTEND:20260517T180000
-SUMMARY:ÃBV vs VÃ­kingur R.
-LOCATION:HÃ¡steinsvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - Besta deild karla
+SUMMARY:ÍBV vs Víkingur R.
+LOCATION:Hásteinsvöllur
+DESCRIPTION:Íslandsmót KSÍ - Besta deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:ad93e049dba982841cf0133825ee2380@vikingur.ics
-DTSTAMP:20260420T115229
+UID:e502126cab74f89ae1bfee6329d0acdc@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260522T191500
 DTEND:20260522T211500
-SUMMARY:VÃ­kingur R. vs FH
-LOCATION:VÃ­kingsvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - Besta deild karla
+SUMMARY:Víkingur R. vs FH
+LOCATION:Víkingsvöllur
+DESCRIPTION:Íslandsmót KSÍ - Besta deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:28a544d0fab9722ca81ccbb4914d3028@vikingur.ics
-DTSTAMP:20260420T115229
+UID:7f4e37b48a67e42b55c503ec0c7cd0bb@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260526T191500
 DTEND:20260526T211500
-SUMMARY:Stjarnan vs VÃ­kingur R.
-LOCATION:SamsungvÃ¶llurinn
-DESCRIPTION:ÃslandsmÃ³t KSÃ - Besta deild karla
+SUMMARY:Stjarnan vs Víkingur R.
+LOCATION:Samsungvöllurinn
+DESCRIPTION:Íslandsmót KSÍ - Besta deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:b3d64e147718ef32dc4849398024bce4@vikingur.ics
-DTSTAMP:20260420T115229
+UID:bff25d8e69bd7885f14d946cf1780d80@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260531T191500
 DTEND:20260531T211500
-SUMMARY:Valur vs VÃ­kingur R.
-LOCATION:N1-vÃ¶llurinn HlÃ­Ã°arenda
-DESCRIPTION:ÃslandsmÃ³t KSÃ - Besta deild karla
+SUMMARY:Valur vs Víkingur R.
+LOCATION:N1-völlurinn Hlíðarenda
+DESCRIPTION:Íslandsmót KSÍ - Besta deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:3445cb3fc24859e0ac456936b7d34fba@vikingur.ics
-DTSTAMP:20260420T115229
+UID:0e5325a2d93384d489eb69a7a2d2379b@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260615T191500
 DTEND:20260615T211500
-SUMMARY:VÃ­kingur R. vs KR
-LOCATION:VÃ­kingsvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - Besta deild karla
+SUMMARY:Víkingur R. vs KR
+LOCATION:Víkingsvöllur
+DESCRIPTION:Íslandsmót KSÍ - Besta deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:53e840c0d30a04b5d4a40c5356f628ab@vikingur.ics
-DTSTAMP:20260420T115229
+UID:cd217f46e001e1e0ef5436dda5664fd1@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260621T191500
 DTEND:20260621T211500
-SUMMARY:Fram vs VÃ­kingur R.
-LOCATION:LambhagavÃ¶llurinn
-DESCRIPTION:ÃslandsmÃ³t KSÃ - Besta deild karla
+SUMMARY:Fram vs Víkingur R.
+LOCATION:Lambhagavöllurinn
+DESCRIPTION:Íslandsmót KSÍ - Besta deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:42b4a31e7cd31d308caf36622e743cc8@vikingur.ics
-DTSTAMP:20260420T115229
+UID:94932ce77c988dcb91c8241cd6de2880@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260628T191500
 DTEND:20260628T211500
-SUMMARY:BreiÃ°ablik vs VÃ­kingur R.
-LOCATION:KÃ³pavogsvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - Besta deild karla
+SUMMARY:Breiðablik vs Víkingur R.
+LOCATION:Kópavogsvöllur
+DESCRIPTION:Íslandsmót KSÍ - Besta deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:9cf5eaf40efe6c491910730f55d115d6@vikingur.ics
-DTSTAMP:20260420T115229
+UID:0b57042c2ce2a96cca3d17e58f8546e7@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260702T191500
 DTEND:20260702T211500
-SUMMARY:VÃ­kingur R. vs KA
-LOCATION:VÃ­kingsvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - Besta deild karla
+SUMMARY:Víkingur R. vs KA
+LOCATION:Víkingsvöllur
+DESCRIPTION:Íslandsmót KSÍ - Besta deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:04de28452e82dfef607eae42f9505f13@vikingur.ics
-DTSTAMP:20260420T115229
+UID:8b1e0cc38ecee63e75b17b43881d69c4@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260718T160000
 DTEND:20260718T180000
-SUMMARY:ÃÃ³r vs VÃ­kingur R.
-LOCATION:ÃÃ³rsvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - Besta deild karla
+SUMMARY:Þór vs Víkingur R.
+LOCATION:Þórsvöllur
+DESCRIPTION:Íslandsmót KSÍ - Besta deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:88ec727e14baab41d33413dff5802681@vikingur.ics
-DTSTAMP:20260420T115229
+UID:ec788609ddec4e1d93a9e1bead41ad8d@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260726T191500
 DTEND:20260726T211500
-SUMMARY:VÃ­kingur R. vs KeflavÃ­k
-LOCATION:VÃ­kingsvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - Besta deild karla
+SUMMARY:Víkingur R. vs Keflavík
+LOCATION:Víkingsvöllur
+DESCRIPTION:Íslandsmót KSÍ - Besta deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:30d7e350d986173060c402ad808989a3@vikingur.ics
-DTSTAMP:20260420T115229
+UID:b71e568b77d2b7c1cbd4733d7600167c@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260804T191500
 DTEND:20260804T211500
-SUMMARY:ÃA vs VÃ­kingur R.
-LOCATION:ELKEM vÃ¶llurinn
-DESCRIPTION:ÃslandsmÃ³t KSÃ - Besta deild karla
+SUMMARY:ÍA vs Víkingur R.
+LOCATION:ELKEM völlurinn
+DESCRIPTION:Íslandsmót KSÍ - Besta deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:516318e7aa53703e4a832771ca017769@vikingur.ics
-DTSTAMP:20260420T115229
+UID:5faaa0433ec07b3fa5d8f073e615866e@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260809T180000
 DTEND:20260809T200000
-SUMMARY:VÃ­kingur R. vs ÃBV
-LOCATION:VÃ­kingsvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - Besta deild karla
+SUMMARY:Víkingur R. vs ÍBV
+LOCATION:Víkingsvöllur
+DESCRIPTION:Íslandsmót KSÍ - Besta deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:f34b2fd07a462cc8053a01d4917a34ed@vikingur.ics
-DTSTAMP:20260420T115229
+UID:494eae263e4f8408cdff93bd4929b827@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260816T180000
 DTEND:20260816T200000
-SUMMARY:FH vs VÃ­kingur R.
-LOCATION:KaplakrikavÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - Besta deild karla
+SUMMARY:FH vs Víkingur R.
+LOCATION:Kaplakrikavöllur
+DESCRIPTION:Íslandsmót KSÍ - Besta deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:db9e54997a3469784cc7468d0f037380@vikingur.ics
-DTSTAMP:20260420T115229
+UID:59daaf01a1a2709c68a346df5cbe4dd7@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260823T191500
 DTEND:20260823T211500
-SUMMARY:VÃ­kingur R. vs Valur
-LOCATION:VÃ­kingsvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - Besta deild karla
+SUMMARY:Víkingur R. vs Valur
+LOCATION:Víkingsvöllur
+DESCRIPTION:Íslandsmót KSÍ - Besta deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:4e8ca1866e4dbb2394dae0fda578f3d3@vikingur.ics
-DTSTAMP:20260420T115229
+UID:a5edd60685cbcb3257c92ebdbbccc1d4@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260830T170000
 DTEND:20260830T190000
-SUMMARY:KR vs VÃ­kingur R.
+SUMMARY:KR vs Víkingur R.
 LOCATION:Meistaravellir
-DESCRIPTION:ÃslandsmÃ³t KSÃ - Besta deild karla
+DESCRIPTION:Íslandsmót KSÍ - Besta deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:4729f490095f9328007c556bc11a1805@vikingur.ics
-DTSTAMP:20260420T115229
+UID:b25ae57b66a1df219dea481d04f5c019@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260906T140000
 DTEND:20260906T160000
-SUMMARY:VÃ­kingur R. vs Fram
-LOCATION:VÃ­kingsvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - Besta deild karla
+SUMMARY:Víkingur R. vs Fram
+LOCATION:Víkingsvöllur
+DESCRIPTION:Íslandsmót KSÍ - Besta deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:21897cbe28fb8f6af0ef31562b39414d@vikingur.ics
-DTSTAMP:20260420T115229
+UID:aa617e1ed25f237ee1fd0e1b3905dca4@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260501T140000
 DTEND:20260501T160000
-SUMMARY:VÃ­kingur Ã. vs HvÃ­ti riddarinn
-LOCATION:ÃlafsvÃ­kurvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - 2. deild karla
+SUMMARY:Víkingur Ó. vs Hvíti riddarinn
+LOCATION:Ólafsvíkurvöllur
+DESCRIPTION:Íslandsmót KSÍ - 2. deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:7ce12302db983217ef79f856b18bd3c3@vikingur.ics
-DTSTAMP:20260420T115229
+UID:1be0ca77168c9aeb2b26113af9547aa3@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260509T160000
 DTEND:20260509T180000
-SUMMARY:KormÃ¡kur/HvÃ¶t vs VÃ­kingur Ã.
-LOCATION:BlÃ¶nduÃ³svÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - 2. deild karla
+SUMMARY:Kormákur/Hvöt vs Víkingur Ó.
+LOCATION:Blönduósvöllur
+DESCRIPTION:Íslandsmót KSÍ - 2. deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:b8a1f87e9ba884fa37aeaa6c1fa6c3b0@vikingur.ics
-DTSTAMP:20260420T115229
+UID:afa741cce73296b46cdbdb55987f6c6e@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260516T160000
 DTEND:20260516T180000
-SUMMARY:VÃ­kingur Ã. vs DalvÃ­k/Reynir
-LOCATION:ÃlafsvÃ­kurvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - 2. deild karla
+SUMMARY:Víkingur Ó. vs Dalvík/Reynir
+LOCATION:Ólafsvíkurvöllur
+DESCRIPTION:Íslandsmót KSÍ - 2. deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:3cf210a9d6838c568a6e9e753c5981a9@vikingur.ics
-DTSTAMP:20260420T115229
+UID:19a84dcd543eca241710dc6334d23782@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260523T140000
 DTEND:20260523T160000
-SUMMARY:FjÃ¶lnir vs VÃ­kingur Ã.
-LOCATION:EgilshÃ¶ll
-DESCRIPTION:ÃslandsmÃ³t KSÃ - 2. deild karla
+SUMMARY:Fjölnir vs Víkingur Ó.
+LOCATION:Egilshöll
+DESCRIPTION:Íslandsmót KSÍ - 2. deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:df2420bddc3214532b4a4d3279bf6c8b@vikingur.ics
-DTSTAMP:20260420T115229
+UID:932e7ff45b78024e0f4e9ddee11d5aaf@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260531T140000
 DTEND:20260531T160000
-SUMMARY:Selfoss vs VÃ­kingur Ã.
-LOCATION:JÃVERK-vÃ¶llurinn
-DESCRIPTION:ÃslandsmÃ³t KSÃ - 2. deild karla
+SUMMARY:Selfoss vs Víkingur Ó.
+LOCATION:JÁVERK-völlurinn
+DESCRIPTION:Íslandsmót KSÍ - 2. deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:6fb1ff0e26888fc3b1ee3f146ecf9b99@vikingur.ics
-DTSTAMP:20260420T115229
+UID:e3d55abc4a560664bdcbc1dcfe0c7473@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260606T140000
 DTEND:20260606T160000
-SUMMARY:VÃ­kingur Ã. vs KÃ¡ri
-LOCATION:ÃlafsvÃ­kurvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - 2. deild karla
+SUMMARY:Víkingur Ó. vs Kári
+LOCATION:Ólafsvíkurvöllur
+DESCRIPTION:Íslandsmót KSÍ - 2. deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:a59e55c584a79dce84340a1abf2c4d17@vikingur.ics
-DTSTAMP:20260420T115229
+UID:fe01d992f4d8ea2fea3d5fc83d711681@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260610T191500
 DTEND:20260610T211500
-SUMMARY:ÃrÃ³ttur V. vs VÃ­kingur Ã.
-LOCATION:VogaÃ­dÃ½fuvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - 2. deild karla
+SUMMARY:Þróttur V. vs Víkingur Ó.
+LOCATION:Vogaídýfuvöllur
+DESCRIPTION:Íslandsmót KSÍ - 2. deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:dfe27f2ea851e2d2579dc36b4512b7d8@vikingur.ics
-DTSTAMP:20260420T115229
+UID:fddc8435286fb839e429d766a5e73c82@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260614T160000
 DTEND:20260614T180000
-SUMMARY:VÃ­kingur Ã. vs Magni
-LOCATION:ÃlafsvÃ­kurvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - 2. deild karla
+SUMMARY:Víkingur Ó. vs Magni
+LOCATION:Ólafsvíkurvöllur
+DESCRIPTION:Íslandsmót KSÍ - 2. deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:c1cf4852f42ed4a583f16ad68cbfebc0@vikingur.ics
-DTSTAMP:20260420T115229
+UID:6afec43c1f72ab965b88896bc9525163@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260620T160000
 DTEND:20260620T180000
-SUMMARY:Haukar vs VÃ­kingur Ã.
-LOCATION:BIRTU vÃ¶llurinn
-DESCRIPTION:ÃslandsmÃ³t KSÃ - 2. deild karla
+SUMMARY:Haukar vs Víkingur Ó.
+LOCATION:BIRTU völlurinn
+DESCRIPTION:Íslandsmót KSÍ - 2. deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:b0878095cfe162a13381199699bae974@vikingur.ics
-DTSTAMP:20260420T115229
+UID:7d01d00a9fd4c5948072fe67a2feaf36@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260627T140000
 DTEND:20260627T160000
-SUMMARY:VÃ­kingur Ã. vs KFG
-LOCATION:ÃlafsvÃ­kurvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - 2. deild karla
+SUMMARY:Víkingur Ó. vs KFG
+LOCATION:Ólafsvíkurvöllur
+DESCRIPTION:Íslandsmót KSÍ - 2. deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:f1e1a5bc20db8c3bd612632bd9ce41bc@vikingur.ics
-DTSTAMP:20260420T115229
+UID:73576dae9fc94cdaaadb39e19ba6bb83@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260704T140000
 DTEND:20260704T160000
-SUMMARY:KFA vs VÃ­kingur Ã.
-LOCATION:SÃN-vÃ¶llurinn
-DESCRIPTION:ÃslandsmÃ³t KSÃ - 2. deild karla
+SUMMARY:KFA vs Víkingur Ó.
+LOCATION:SÚN-völlurinn
+DESCRIPTION:Íslandsmót KSÍ - 2. deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:2864b28f70e3ebc0681c191c52f4cc64@vikingur.ics
-DTSTAMP:20260420T115229
+UID:e128bb257a3d4cd6e74867cf24106b34@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260712T160000
 DTEND:20260712T180000
-SUMMARY:VÃ­kingur Ã. vs KormÃ¡kur/HvÃ¶t
-LOCATION:ÃlafsvÃ­kurvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - 2. deild karla
+SUMMARY:Víkingur Ó. vs Kormákur/Hvöt
+LOCATION:Ólafsvíkurvöllur
+DESCRIPTION:Íslandsmót KSÍ - 2. deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:d4e357eea6e92be1d592b0509ddb1e7a@vikingur.ics
-DTSTAMP:20260420T115229
+UID:236fef4c65e0fd7c6b30813e7c8a5acc@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260717T200000
 DTEND:20260717T220000
-SUMMARY:HvÃ­ti riddarinn vs VÃ­kingur Ã.
-LOCATION:MalbikstÃ¶Ã°in aÃ° VarmÃ¡
-DESCRIPTION:ÃslandsmÃ³t KSÃ - 2. deild karla
+SUMMARY:Hvíti riddarinn vs Víkingur Ó.
+LOCATION:Malbikstöðin að Varmá
+DESCRIPTION:Íslandsmót KSÍ - 2. deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:77d0e4d772ade0d9546465e9631a647f@vikingur.ics
-DTSTAMP:20260420T115229
+UID:dcaaaa1c0b67925ea6429d76ae47d931@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260725T160000
 DTEND:20260725T180000
-SUMMARY:DalvÃ­k/Reynir vs VÃ­kingur Ã.
-LOCATION:DalvÃ­kurvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - 2. deild karla
+SUMMARY:Dalvík/Reynir vs Víkingur Ó.
+LOCATION:Dalvíkurvöllur
+DESCRIPTION:Íslandsmót KSÍ - 2. deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:6563f83cc17620e0afea9d1c1a1e9a94@vikingur.ics
-DTSTAMP:20260420T115229
+UID:94bafd13be3cfa561b94f13a59440085@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260729T191500
 DTEND:20260729T211500
-SUMMARY:VÃ­kingur Ã. vs FjÃ¶lnir
-LOCATION:ÃlafsvÃ­kurvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - 2. deild karla
+SUMMARY:Víkingur Ó. vs Fjölnir
+LOCATION:Ólafsvíkurvöllur
+DESCRIPTION:Íslandsmót KSÍ - 2. deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:2d14cc056f3721feb057ed2a2dcb91f7@vikingur.ics
-DTSTAMP:20260420T115229
+UID:dcfd10abe9031b6a703db4c29dfeefa0@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260810T191500
 DTEND:20260810T211500
-SUMMARY:VÃ­kingur Ã. vs Selfoss
-LOCATION:ÃlafsvÃ­kurvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - 2. deild karla
+SUMMARY:Víkingur Ó. vs Selfoss
+LOCATION:Ólafsvíkurvöllur
+DESCRIPTION:Íslandsmót KSÍ - 2. deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:950271a5996d74d007f4d0292cd09b12@vikingur.ics
-DTSTAMP:20260420T115229
+UID:ec4a33a6ecda2667c5b58ba6b89abde7@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260815T140000
 DTEND:20260815T160000
-SUMMARY:KÃ¡ri vs VÃ­kingur Ã.
-LOCATION:AkraneshÃ¶llin
-DESCRIPTION:ÃslandsmÃ³t KSÃ - 2. deild karla
+SUMMARY:Kári vs Víkingur Ó.
+LOCATION:Akraneshöllin
+DESCRIPTION:Íslandsmót KSÍ - 2. deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:1613a47a1762d846e03f24e70538a27e@vikingur.ics
-DTSTAMP:20260420T115229
+UID:8ec81db19d230437fee22de7d02eef4b@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260819T180000
 DTEND:20260819T200000
-SUMMARY:VÃ­kingur Ã. vs ÃrÃ³ttur V.
-LOCATION:ÃlafsvÃ­kurvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - 2. deild karla
+SUMMARY:Víkingur Ó. vs Þróttur V.
+LOCATION:Ólafsvíkurvöllur
+DESCRIPTION:Íslandsmót KSÍ - 2. deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:60c12b2b640be0284eabc4dd00ffd204@vikingur.ics
-DTSTAMP:20260420T115229
+UID:e838d83bcdbe9ca3bdbe152a201d8acf@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260823T140000
 DTEND:20260823T160000
-SUMMARY:Magni vs VÃ­kingur Ã.
-LOCATION:GrenivÃ­kurvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - 2. deild karla
+SUMMARY:Magni vs Víkingur Ó.
+LOCATION:Grenivíkurvöllur
+DESCRIPTION:Íslandsmót KSÍ - 2. deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:d48d21e69b30fa92df8dd6fd8275f949@vikingur.ics
-DTSTAMP:20260420T115229
+UID:2973fa11d14f4a9b38dfa8cb29d754f5@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260829T140000
 DTEND:20260829T160000
-SUMMARY:VÃ­kingur Ã. vs Haukar
-LOCATION:ÃlafsvÃ­kurvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - 2. deild karla
+SUMMARY:Víkingur Ó. vs Haukar
+LOCATION:Ólafsvíkurvöllur
+DESCRIPTION:Íslandsmót KSÍ - 2. deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:54fe4b49fbfd0a2413fc353a9278b6af@vikingur.ics
-DTSTAMP:20260420T115229
+UID:66d0f51bb28b41f4adf0d46c152dbf0c@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260905T140000
 DTEND:20260905T160000
-SUMMARY:KFG vs VÃ­kingur Ã.
-LOCATION:SamsungvÃ¶llurinn
-DESCRIPTION:ÃslandsmÃ³t KSÃ - 2. deild karla
+SUMMARY:KFG vs Víkingur Ó.
+LOCATION:Samsungvöllurinn
+DESCRIPTION:Íslandsmót KSÍ - 2. deild karla
 END:VEVENT
 BEGIN:VEVENT
-UID:80e4e7745969c57ed08df22825da72c2@vikingur.ics
-DTSTAMP:20260420T115229
+UID:a28a820e5af05cd8395552ba468edbfe@vikingur.ics
+DTSTAMP:20260420T115759
 DTSTART:20260912T140000
 DTEND:20260912T160000
-SUMMARY:VÃ­kingur Ã. vs KFA
-LOCATION:ÃlafsvÃ­kurvÃ¶llur
-DESCRIPTION:ÃslandsmÃ³t KSÃ - 2. deild karla
+SUMMARY:Víkingur Ó. vs KFA
+LOCATION:Ólafsvíkurvöllur
+DESCRIPTION:Íslandsmót KSÍ - 2. deild karla
 END:VEVENT
 END:VCALENDAR
