@@ -48,6 +48,11 @@ async function scrapeMatches() {
       time = timeLoc || "00:00";
     }
 
+    // Set location to Víkin for home games
+    if (home.includes("Víkingur R.")) {
+      location = "Víkin";
+    }
+
     // 5. Parse Date and Time into YYYY-MM-DD HH:mm
     const dateParts = dateStr.split(" ");
     if (dateParts.length < 3) continue;
