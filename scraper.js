@@ -1,59 +1,47 @@
-const { chromium } = require('playwright');
-const { GoogleSpreadsheet } = require('google-spreadsheet');
+const fetch = require("node-fetch");
+const { GoogleSpreadsheet } = require("google-spreadsheet");
 
 const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
 
 (async () => {
   try {
-    console.log("Starting scraper...");
+    console.log("Fetching matches from API...");
 
-    const creds = JSON.parse(process.env.GOOGLE_CREDENTIALS);
+    // 1. FETCH DATA FROM API
+    const res = await fetch(
+      "https://bestadeildin.is/API/ksi_leikir.php?deild=karla"
+    );
 
-    const browser = await chromium.launch({
-      headless: true
+    const data = await res.json();
+
+    console.log("Total matches from API:", data.length);
+
+    // 2. FILTER VÍKINGUR MATCHES
+    const vikingurMatches = data.filter(match => {
+      const home = (match.home || "").toLowerCase();
+      const away = (match.away || "").toLowerCase();
+
+      return (
+        home.includes("víkingur") ||
+        away.includes("víkingur")
+      );
     });
 
-    const page = await browser.newPage();
+    console.log("Víkingur matches found:", vikingurMatches.length);
 
-    const url =
-      "https://www.ksi.is/leikir-felaga/felagslid/?club=2492&category=Fullor%C3%B0nir&dateFrom=2026-01-01&dateTo=2026-12-31";
-
-    await page.goto(url, { waitUntil: "domcontentloaded" });
-
-    // 🔥 WAIT FOR REAL CONTENT (IMPORTANT FIX)
-    await page.waitForTimeout(10000);
-
-    // 🔥 DEBUG: confirm page is actually loaded
-    const title = await page.title();
-    console.log("Page title:", title);
-
-    const rows = await page.evaluate(() => {
-      const trs = document.querySelectorAll("tr");
-
-      return Array.from(trs)
-        .map(tr => {
-          const tds = tr.querySelectorAll("td");
-          return Array.from(tds).map(td => td.innerText.trim());
-        })
-        .filter(r => r && r.length >= 4);
-    });
-
-    await browser.close();
-
-    console.log("Rows found:", rows.length);
-
-    if (rows.length === 0) {
-      console.log("❌ No data found — page is JS-rendered or blocked.");
+    if (vikingurMatches.length === 0) {
+      console.log("No matches found — check API structure.");
+      return;
     }
 
-    // -----------------------
-    // GOOGLE SHEETS
-    // -----------------------
+    // 3. GOOGLE SHEETS AUTH
+    const creds = JSON.parse(process.env.GOOGLE_CREDENTIALS);
+
     const doc = new GoogleSpreadsheet(SHEET_ID);
 
     await doc.useServiceAccountAuth({
       client_email: creds.client_email,
-      private_key: creds.private_key.replace(/\\n/g, '\n'),
+      private_key: creds.private_key.replace(/\\n/g, "\n"),
     });
 
     await doc.loadInfo();
@@ -64,24 +52,25 @@ const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
 
     await sheet.setHeaderRow([
       "Date",
-      "Competition",
       "Home",
-      "Away"
+      "Away",
+      "Competition"
     ]);
 
-    for (const r of rows) {
+    // 4. WRITE DATA
+    for (const match of vikingurMatches) {
       await sheet.addRow({
-        Date: r[0] || "",
-        Competition: r[1] || "",
-        Home: r[2] || "",
-        Away: r[3] || ""
+        Date: match.date || match.time || "",
+        Home: match.home || "",
+        Away: match.away || "",
+        Competition: match.competition || ""
       });
     }
 
     console.log("Google Sheet updated successfully");
 
   } catch (err) {
-    console.error("SCRAPER ERROR:", err);
+    console.error("ERROR:", err);
     process.exit(1);
   }
 })();
