@@ -35,12 +35,14 @@ jobs:
           python-version: "3.11"
 
       - name: Install Python dependencies
-        run: pip install requests
+        run: pip install gspread google-auth
 
       - name: Generate ICS Calendars
         run: |
           python generate_calendar.py Karla vikingur_karla.ics
           python generate_calendar.py Kvenna vikingur_kvenna.ics
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
       - name: Commit and Push changes
         run: |
