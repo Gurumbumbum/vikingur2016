@@ -57,7 +57,7 @@ async function scrapeMatches() {
     const year = 2026; 
 
     // Robust time extraction
-    let time = "00:00";
+    time = "00:00";
     if (timeLoc.includes("|")) {
       time = timeLoc.split("|")[0].trim();
     } else if (timeLoc.match(/\d{2}:\d{2}/)) {
