@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Vikingur Calendar//EN
@@ -447,3 +448,5 @@ LOCATION:Domusnovavöllurinn
 DESCRIPTION:Reykjavíkurmót mfl. karla 2026 - A riðill
 END:VEVENT
 END:VCALENDAR
+=======
+>>>>>>> Stashed changes
