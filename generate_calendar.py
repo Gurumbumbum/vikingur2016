@@ -9,7 +9,7 @@ CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTKGm68TxaqhiVGe9Q37i
 def generate_uid(date, home, away):
     """Generate a stable UID for the event."""
     raw = f"{date}-{home}-{away}"
-    return hashlib.md5(raw.encode()).hexdigest()
+    return hashlib.md5(raw.encode('utf-8')).hexdigest()
 
 def main():
     try:
@@ -20,9 +20,14 @@ def main():
         print(f"Error fetching sheet: {e}")
         return
 
-    # Ensure response content is decoded as UTF-8
-    response.encoding = 'utf-8'
-    rows = csv.reader(response.text.splitlines())
+    # Use response.content.decode('utf-8') to be absolutely sure about the encoding
+    try:
+        content = response.content.decode('utf-8')
+    except UnicodeDecodeError:
+        print("UTF-8 decode failed, falling back to response.text")
+        content = response.text
+
+    rows = csv.reader(content.splitlines())
 
     # Skip header row
     try:
@@ -56,6 +61,7 @@ def main():
             if not date_str:
                 continue
 
+            # Parse date: 2026-03-31 14:00
             dt_obj = datetime.strptime(date_str, "%Y-%m-%d %H:%M")
             dt_start = dt_obj.strftime("%Y%m%dT%H%M%S")
             
