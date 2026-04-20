@@ -1,61 +1,94 @@
 const { GoogleSpreadsheet } = require("google-spreadsheet");
 
 const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
-const VIKINGUR_ID = 5364; // Víkingur Reykjavík
+const SOURCE_URL = "https://vikingur.is/knattspyrna/leikir-og-urslit/";
 
-// List of API endpoints to fetch from to ensure full coverage
-const ENDPOINTS = [
-  "https://bestadeildin.is/API/ksi_leikir.php?deild=karla",      // General Men's leagues
-  "https://bestadeildin.is/API/ksi_leikir.php?felag=5364",       // All Víkingur R. club matches
-  "https://bestadeildin.is/API/ksi_leikir.php?id=7059683",       // Mjólkurbikarinn 2026 (Cup)
-  "https://bestadeildin.is/API/ksi_leikir.php?id=7025605",       // Meistarakeppni 2026 (Super Cup)
-];
+const MONTHS_IS = {
+  "janúar": 0, "febrúar": 1, "mars": 2, "apríl": 3, "maí": 4, "júní": 5,
+  "júlí": 6, "ágúst": 7, "september": 8, "október": 9, "nóvember": 10, "desember": 11
+};
+
+async function scrapeMatches() {
+  console.log(`Fetching HTML from ${SOURCE_URL}...`);
+  const res = await fetch(SOURCE_URL);
+  const html = await res.text();
+
+  const matches = [];
+  // Split by match-card to isolate each game
+  const cards = html.split('<div class="match-card');
+  
+  for (let i = 1; i < cards.length; i++) {
+    const card = cards[i];
+
+    // 1. Extract Date (e.g., "Mánudagur 27. apríl")
+    const dateMatch = card.match(/<strong class="date">([^<]+)<\/strong>/);
+    if (!dateMatch) continue;
+    const dateStr = dateMatch[1].trim();
+
+    // 2. Extract Teams (from figcaptions)
+    const teams = [...card.matchAll(/<figcaption>([^<]+)<\/figcaption>/g)].map(m => m[1].trim());
+    if (teams.length < 2) continue;
+    const home = teams[0];
+    const away = teams[1];
+
+    // 3. Extract Competition (first <p> in footer)
+    const footerParts = card.split('<footer>')[1]?.split('</footer>')[0] || "";
+    const pTags = footerParts.match(/<p>([^<]+)<\/p>/g) || [];
+    const competition = (pTags[0] || "").replace(/<p>|<\/p>/g, "").trim();
+
+    // 4. Extract Time & Location (second <p> in footer: "19:15 | Víkingsvöllur")
+    const timeLoc = (pTags[1] || "").replace(/<p>|<\/p>/g, "").trim();
+    let time = "00:00";
+    let location = "";
+    if (timeLoc.includes("|")) {
+      const parts = timeLoc.split("|").map(s => s.trim());
+      time = parts[0] || "00:00";
+      location = parts[1] || "";
+    } else {
+      time = timeLoc || "00:00";
+    }
+
+    // 5. Parse Date and Time into YYYY-MM-DD HH:mm
+    // Format: "DayName Number. MonthName"
+    const dateParts = dateStr.split(" ");
+    if (dateParts.length < 3) continue;
+    const day = dateParts[1].replace(".", "").padStart(2, '0');
+    const monthName = dateParts[2].toLowerCase();
+    const month = String((MONTHS_IS[monthName] ?? 0) + 1).padStart(2, '0');
+    const year = 2026; // Current season
+
+    const formattedDate = `${year}-${month}-${day} ${time}`;
+
+    // 6. Filter: Only include first team games (Víkingur R.)
+    // Avoid youth teams, women's team (unless specified), or different clubs
+    const isVikingurR = home.includes("Víkingur R.") || away.includes("Víkingur R.");
+    const isFirstTeam = competition.toLowerCase().includes("karla") || competition.toLowerCase().includes("besta deild");
+
+    if (isVikingurR && isFirstTeam) {
+      matches.push({
+        Date: formattedDate,
+        Home: home,
+        Away: away,
+        Location: location,
+        Competition: competition
+      });
+    }
+  }
+
+  return matches;
+}
 
 (async () => {
   try {
-    console.log("Fetching matches from multiple API sources...");
+    const matches = await scrapeMatches();
+    console.log(`Found ${matches.length} Víkingur R. matches on the website.`);
 
-    const allMatchesMap = new Map();
-
-    for (const url of ENDPOINTS) {
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
-        console.log(`Fetched ${data.length} matches from: ${url}`);
-
-        for (const match of data) {
-          // Check if it's a Víkingur REYKJAVÍK match
-          const isVikingurHome = match.homeTeam === VIKINGUR_ID;
-          const isVikingurAway = match.awayTeam === VIKINGUR_ID;
-          
-          // Refined text search: must include "Víkingur R" or NOT include "Ó."
-          const desc = (match.matchDescription || "").toLowerCase();
-          const mentionsVikingur = desc.includes("víkingur");
-          const mentionsReykjavik = desc.includes("víkingur r.");
-          const isOlafsvik = desc.includes("víkingur ó.") || desc.includes("víkingur ólafs");
-
-          // We include if IDs match OR (it mentions Víkingur AND is not Ólafsvík)
-          if (isVikingurHome || isVikingurAway || (mentionsVikingur && !isOlafsvik)) {
-            const key = match.matchId || match.id || `${match.matchDate}-${match.matchDescription}`;
-            allMatchesMap.set(key, match);
-          }
-        }
-      } catch (e) {
-        console.warn(`Could not fetch from ${url}: ${e.message}`);
-      }
-    }
-
-    const vikingurMatches = Array.from(allMatchesMap.values())
-      .sort((a, b) => a.matchDate - b.matchDate);
-
-    console.log(`Total unique Víkingur R. matches found: ${vikingurMatches.length}`);
-
-    if (vikingurMatches.length === 0) {
-      console.log("No matches found.");
+    if (matches.length === 0) {
+      console.log("No matches found — check if website structure changed.");
       return;
     }
 
-    // Google Sheets Auth
+    // Google Sheets Sync
     if (!process.env.GOOGLE_CREDENTIALS) {
       throw new Error("Missing GOOGLE_CREDENTIALS environment variable");
     }
@@ -71,48 +104,13 @@ const ENDPOINTS = [
     const sheet = doc.sheetsByIndex[0];
 
     await sheet.clear();
-    await sheet.setHeaderRow([
-      "Date",
-      "Home",
-      "Away",
-      "Location",
-      "Competition"
-    ]);
+    await sheet.setHeaderRow(["Date", "Home", "Away", "Location", "Competition"]);
 
-    for (const match of vikingurMatches) {
-      let home = "Unknown";
-      let away = "Unknown";
-      
-      const desc = match.matchDescription || "";
-      const scoreMatch = desc.match(/\s+([0-9]+:[0-9]+|-:-)$/);
-      const namesOnly = scoreMatch ? desc.substring(0, scoreMatch.index) : desc;
-      
-      if (namesOnly.includes(" - ")) {
-        const parts = namesOnly.split(" - ").map(s => s.trim());
-        home = parts[0] || "Unknown";
-        away = parts[1] || "Unknown";
-      } else {
-          home = namesOnly;
-      }
-
-      const dt = new Date(match.matchDate);
-      const day = String(dt.getDate()).padStart(2, '0');
-      const month = String(dt.getMonth() + 1).padStart(2, '0');
-      const year = dt.getFullYear();
-      const hours = String(dt.getHours()).padStart(2, '0');
-      const minutes = String(dt.getMinutes()).padStart(2, '0');
-      const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
-
-      await sheet.addRow({
-        Date: formattedDate,
-        Home: home,
-        Away: away,
-        Location: match.facility || "",
-        Competition: match.name || ""
-      });
+    for (const match of matches) {
+      await sheet.addRow(match);
     }
 
-    console.log("Google Sheet updated (filtered for Víkingur R. only).");
+    console.log("Google Sheet updated successfully from Víkingur.is");
 
   } catch (err) {
     console.error("ERROR:", err);
