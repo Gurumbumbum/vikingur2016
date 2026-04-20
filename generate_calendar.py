@@ -20,6 +20,8 @@ def main():
         print(f"Error fetching sheet: {e}")
         return
 
+    # Ensure response content is decoded as UTF-8
+    response.encoding = 'utf-8'
     rows = csv.reader(response.text.splitlines())
 
     # Skip header row
@@ -41,7 +43,6 @@ def main():
 
     count = 0
     for i, row in enumerate(rows):
-        # Safety check (prevents crashes)
         if len(row) < 3:
             continue
 
@@ -55,11 +56,9 @@ def main():
             if not date_str:
                 continue
 
-            # Parse date: 2026-03-31 14:00
             dt_obj = datetime.strptime(date_str, "%Y-%m-%d %H:%M")
             dt_start = dt_obj.strftime("%Y%m%dT%H%M%S")
             
-            # Assume 2 hour duration for safety if not specified
             import datetime as dt_mod
             dt_end = (dt_obj + dt_mod.timedelta(hours=2)).strftime("%Y%m%dT%H%M%S")
 
@@ -82,7 +81,6 @@ def main():
 
     lines.append("END:VCALENDAR")
 
-    # Write ICS file
     try:
         with open("vikingur.ics", "w", encoding="utf-8") as f:
             f.write("\n".join(lines))
