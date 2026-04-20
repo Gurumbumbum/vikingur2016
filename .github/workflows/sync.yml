@@ -37,13 +37,15 @@ jobs:
       - name: Install Python dependencies
         run: pip install requests
 
-      - name: Generate ICS Calendar
-        run: python generate_calendar.py
+      - name: Generate ICS Calendars
+        run: |
+          python generate_calendar.py Karla vikingur_karla.ics
+          python generate_calendar.py Kvenna vikingur_kvenna.ics
 
       - name: Commit and Push changes
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add vikingur.ics
-          git commit -m "auto update calendar: $(date +'%Y-%m-%d %H:%M')" || exit 0
+          git add vikingur_karla.ics vikingur_kvenna.ics
+          git commit -m "auto update calendars: $(date +'%Y-%m-%d %H:%M')" || exit 0
           git push

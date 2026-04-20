@@ -13,30 +13,27 @@ async function scrapeMatches() {
   const res = await fetch(SOURCE_URL);
   const html = await res.text();
 
-  const matches = [];
-  // Split by match-card to isolate each game
+  const karla = [];
+  const kvenna = [];
+
   const cards = html.split('<div class="match-card');
   
   for (let i = 1; i < cards.length; i++) {
     const card = cards[i];
 
-    // 1. Extract Date (e.g., "Mánudagur 27. apríl")
     const dateMatch = card.match(/<strong[^>]*class="date"[^>]*>([\s\S]+?)<\/strong>/i);
     if (!dateMatch) continue;
     const dateStr = dateMatch[1].replace(/<[^>]+>/g, "").trim();
 
-    // 2. Extract Teams (from figcaptions)
     const teams = [...card.matchAll(/<figcaption[^>]*>([\s\S]+?)<\/figcaption>/gi)].map(m => m[1].replace(/<[^>]+>/g, "").trim());
     if (teams.length < 2) continue;
     const home = teams[0];
     const away = teams[1];
 
-    // 3. Extract Competition (first <p> in footer)
     const footerParts = card.split(/<footer[^>]*>/i)[1]?.split(/<\/footer>/i)[0] || "";
     const pTags = [...footerParts.matchAll(/<p[^>]*>([\s\S]+?)<\/p>/gi)].map(m => m[1].replace(/<[^>]+>/g, "").trim());
     const competition = (pTags[0] || "").trim();
 
-    // 4. Extract Time & Location (second <p> in footer: "19:15 | Víkingsvöllur")
     const timeLoc = (pTags[1] || "").trim();
     let time = "00:00";
     let location = "";
@@ -44,16 +41,17 @@ async function scrapeMatches() {
       const parts = timeLoc.split("|").map(s => s.trim());
       time = parts[0] || "00:00";
       location = parts[1] || "";
-    } else {
-      time = timeLoc || "00:00";
+    } else if (timeLoc.match(/\d{2}:\d{2}/)) {
+      time = timeLoc.match(/\d{2}:\d{2}/)[0];
     }
+    
+    if (!time || time === "-:-") time = "00:00";
 
     // Set location to Víkin for home games
     if (home.includes("Víkingur R.")) {
       location = "Víkin";
     }
 
-    // 5. Parse Date and Time into YYYY-MM-DD HH:mm
     const dateParts = dateStr.split(" ");
     if (dateParts.length < 3) continue;
     const dayNumeric = dateParts[1].replace(".", "").padStart(2, '0');
@@ -61,49 +59,41 @@ async function scrapeMatches() {
     const month = String((MONTHS_IS[monthName] ?? 0) + 1).padStart(2, '0');
     const year = 2026; 
 
-    // Robust time extraction
-    time = "00:00";
-    if (timeLoc.includes("|")) {
-      time = timeLoc.split("|")[0].trim();
-    } else if (timeLoc.match(/\d{2}:\d{2}/)) {
-      time = timeLoc.match(/\d{2}:\d{2}/)[0];
-    }
-    
-    // Fallback if time is not confirmd
-    if (!time || time === "-:-") time = "00:00";
-
     const formattedDate = `${year}-${month}-${dayNumeric} ${time}`;
 
-    // 6. Filter: Only include first team games (Víkingur R.)
-    // Avoid youth teams, women's team (unless specified), or different clubs
-    const isVikingurR = home.includes("Víkingur R.") || away.includes("Víkingur R.");
-    const isFirstTeam = competition.toLowerCase().includes("karla") || competition.toLowerCase().includes("besta deild");
+    const isKarla = competition.toLowerCase().includes("karla") || (competition.toLowerCase().includes("besta deild") && !competition.toLowerCase().includes("kvenna"));
+    const isKvenna = competition.toLowerCase().includes("kvenna");
 
-    if (isVikingurR && isFirstTeam) {
-      matches.push({
-        Date: formattedDate,
-        Home: home,
-        Away: away,
-        Location: location,
-        Competition: competition
-      });
+    if (home.includes("Víkingur R.") || away.includes("Víkingur R.")) {
+        const matchObj = { Date: formattedDate, Home: home, Away: away, Location: location, Competition: competition };
+        if (isKarla) karla.push(matchObj);
+        else if (isKvenna) kvenna.push(matchObj);
     }
   }
 
-  return matches.sort((a, b) => a.Date.localeCompare(b.Date));
+  return { 
+    karla: karla.sort((a, b) => a.Date.localeCompare(b.Date)),
+    kvenna: kvenna.sort((a, b) => a.Date.localeCompare(b.Date))
+  };
+}
+
+async function updateSheet(doc, sheetName, data) {
+  let sheet = doc.sheetsByTitle[sheetName];
+  if (!sheet) {
+    sheet = await doc.addSheet({ title: sheetName });
+  }
+  await sheet.clear();
+  await sheet.setHeaderRow(["Date", "Home", "Away", "Location", "Competition"]);
+  for (const row of data) {
+    await sheet.addRow(row);
+  }
 }
 
 (async () => {
   try {
-    const matches = await scrapeMatches();
-    console.log(`Found ${matches.length} Víkingur R. matches. Sorting chronologically...`);
+    const { karla, kvenna } = await scrapeMatches();
+    console.log(`Found ${karla.length} Karla matches and ${kvenna.length} Kvenna matches.`);
 
-    if (matches.length === 0) {
-      console.log("No matches found — check if website structure changed.");
-      return;
-    }
-
-    // Google Sheets Sync
     if (!process.env.GOOGLE_CREDENTIALS) {
       throw new Error("Missing GOOGLE_CREDENTIALS environment variable");
     }
@@ -116,16 +106,12 @@ async function scrapeMatches() {
     });
 
     await doc.loadInfo();
-    const sheet = doc.sheetsByIndex[0];
+    
+    // Ensure "Karla" is the first sheet and "Kvenna" exists
+    await updateSheet(doc, "Karla", karla);
+    await updateSheet(doc, "Kvenna", kvenna);
 
-    await sheet.clear();
-    await sheet.setHeaderRow(["Date", "Home", "Away", "Location", "Competition"]);
-
-    for (const match of matches) {
-      await sheet.addRow(match);
-    }
-
-    console.log("Google Sheet updated successfully from Víkingur.is");
+    console.log("Google Sheets updated successfully.");
 
   } catch (err) {
     console.error("ERROR:", err);
