@@ -82,11 +82,12 @@ async function updateSheet(doc, sheetName, data) {
   if (!sheet) {
     sheet = await doc.addSheet({ title: sheetName });
   }
-  await sheet.clear();
-  await sheet.setHeaderRow(["Date", "Home", "Away", "Location", "Competition"]);
-  for (const row of data) {
-    await sheet.addRow(row);
-  }
+    await sheet.clear();
+    await sheet.setHeaderRow(["Date", "Home", "Away", "Location", "Competition"]);
+    
+    if (data.length > 0) {
+      await sheet.addRows(data);
+    }
 }
 
 (async () => {
