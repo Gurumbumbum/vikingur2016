@@ -1,4 +1,13 @@
 const fetch = require("node-fetch");
+
+(async () => {
+  const res = await fetch("https://bestadeildin.is/API/ksi_leikir.php?deild=karla");
+  const data = await res.text();
+
+  console.log("RAW RESPONSE:");
+  console.log(data.slice(0, 1000));
+})();
+const fetch = require("node-fetch");
 const { GoogleSpreadsheet } = require("google-spreadsheet");
 
 const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
