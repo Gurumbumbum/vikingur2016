@@ -3,31 +3,54 @@ const { GoogleSpreadsheet } = require("google-spreadsheet");
 const SHEET_ID = "1Bbbwh0tWFtg8lJGJ4MV4noFVqe-Nh_F7XL334A1jIcc";
 const VIKINGUR_ID = 5364; 
 
+// List of API endpoints to fetch from to ensure full coverage (Leagues, Cup, etc.)
+const ENDPOINTS = [
+  "https://bestadeildin.is/API/ksi_leikir.php?deild=karla",      // General Men's leagues
+  "https://bestadeildin.is/API/ksi_leikir.php?felag=5364",       // All Víkingur club matches
+  "https://bestadeildin.is/API/ksi_leikir.php?id=7059683",       // Mjólkurbikarinn 2026 (Cup)
+  "https://bestadeildin.is/API/ksi_leikir.php?id=7025605",       // Meistarakeppni 2026 (Super Cup)
+];
+
 (async () => {
   try {
-    console.log("Fetching matches from API...");
+    console.log("Fetching matches from multiple API sources...");
 
-    const res = await fetch(
-      "https://bestadeildin.is/API/ksi_leikir.php?deild=karla"
-    );
+    const allMatchesMap = new Map();
 
-    const data = await res.json();
-    console.log("Total matches from API:", data.length);
+    for (const url of ENDPOINTS) {
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        console.log(`Fetched ${data.length} matches from: ${url}`);
 
-    const vikingurMatches = data.filter(match => {
-      const isVikingurHome = match.homeTeam === VIKINGUR_ID;
-      const isVikingurAway = match.awayTeam === VIKINGUR_ID;
-      const descMatches = (match.matchDescription || "").toLowerCase().includes("víkingur");
-      return isVikingurHome || isVikingurAway || descMatches;
-    });
+        for (const match of data) {
+          // Check if it's a Víkingur match
+          const isVikingurHome = match.homeTeam === VIKINGUR_ID;
+          const isVikingurAway = match.awayTeam === VIKINGUR_ID;
+          const descMatches = (match.matchDescription || "").toLowerCase().includes("víkingur");
 
-    console.log("Víkingur matches found:", vikingurMatches.length);
+          if (isVikingurHome || isVikingurAway || descMatches) {
+            // Use matchId or id as a unique key for deduplication
+            const key = match.matchId || match.id || `${match.matchDate}-${match.matchDescription}`;
+            allMatchesMap.set(key, match);
+          }
+        }
+      } catch (e) {
+        console.warn(`Could not fetch from ${url}: ${e.message}`);
+      }
+    }
+
+    const vikingurMatches = Array.from(allMatchesMap.values())
+      .sort((a, b) => a.matchDate - b.matchDate);
+
+    console.log(`Total unique Víkingur matches found: ${vikingurMatches.length}`);
 
     if (vikingurMatches.length === 0) {
       console.log("No matches found.");
       return;
     }
 
+    // Google Sheets Auth
     if (!process.env.GOOGLE_CREDENTIALS) {
       throw new Error("Missing GOOGLE_CREDENTIALS environment variable");
     }
@@ -56,8 +79,6 @@ const VIKINGUR_ID = 5364;
       let away = "Unknown";
       
       const desc = match.matchDescription || "";
-      // Robust split: Match everything before the score (e.g. "4:0" or "-:-")
-      // We look for the first occurrence of " [score] " or just the score at the end
       const scoreMatch = desc.match(/\s+([0-9]+:[0-9]+|-:-)$/);
       const namesOnly = scoreMatch ? desc.substring(0, scoreMatch.index) : desc;
       
@@ -65,6 +86,9 @@ const VIKINGUR_ID = 5364;
         const parts = namesOnly.split(" - ").map(s => s.trim());
         home = parts[0] || "Unknown";
         away = parts[1] || "Unknown";
+      } else {
+          // Fallback if no " - " separator
+          home = namesOnly;
       }
 
       const dt = new Date(match.matchDate);
@@ -84,7 +108,7 @@ const VIKINGUR_ID = 5364;
       });
     }
 
-    console.log("Google Sheet updated successfully");
+    console.log("Google Sheet updated successfully with expanded coverage.");
 
   } catch (err) {
     console.error("ERROR:", err);
