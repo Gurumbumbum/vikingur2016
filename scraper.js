@@ -49,15 +49,25 @@ async function scrapeMatches() {
     }
 
     // 5. Parse Date and Time into YYYY-MM-DD HH:mm
-    // Format: "DayName Number. MonthName"
     const dateParts = dateStr.split(" ");
     if (dateParts.length < 3) continue;
-    const day = dateParts[1].replace(".", "").padStart(2, '0');
+    const dayNumeric = dateParts[1].replace(".", "").padStart(2, '0');
     const monthName = dateParts[2].toLowerCase();
     const month = String((MONTHS_IS[monthName] ?? 0) + 1).padStart(2, '0');
-    const year = 2026; // Current season
+    const year = 2026; 
 
-    const formattedDate = `${year}-${month}-${day} ${time}`;
+    // Robust time extraction
+    let time = "00:00";
+    if (timeLoc.includes("|")) {
+      time = timeLoc.split("|")[0].trim();
+    } else if (timeLoc.match(/\d{2}:\d{2}/)) {
+      time = timeLoc.match(/\d{2}:\d{2}/)[0];
+    }
+    
+    // Fallback if time is not confirmd
+    if (!time || time === "-:-") time = "00:00";
+
+    const formattedDate = `${year}-${month}-${dayNumeric} ${time}`;
 
     // 6. Filter: Only include first team games (Víkingur R.)
     // Avoid youth teams, women's team (unless specified), or different clubs
@@ -75,13 +85,13 @@ async function scrapeMatches() {
     }
   }
 
-  return matches;
+  return matches.sort((a, b) => a.Date.localeCompare(b.Date));
 }
 
 (async () => {
   try {
     const matches = await scrapeMatches();
-    console.log(`Found ${matches.length} Víkingur R. matches on the website.`);
+    console.log(`Found ${matches.length} Víkingur R. matches. Sorting chronologically...`);
 
     if (matches.length === 0) {
       console.log("No matches found — check if website structure changed.");
