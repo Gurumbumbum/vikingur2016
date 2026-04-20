@@ -21,23 +21,23 @@ async function scrapeMatches() {
     const card = cards[i];
 
     // 1. Extract Date (e.g., "Mánudagur 27. apríl")
-    const dateMatch = card.match(/<strong class="date">([^<]+)<\/strong>/);
+    const dateMatch = card.match(/<strong[^>]*class="date"[^>]*>([\s\S]+?)<\/strong>/i);
     if (!dateMatch) continue;
-    const dateStr = dateMatch[1].trim();
+    const dateStr = dateMatch[1].replace(/<[^>]+>/g, "").trim();
 
     // 2. Extract Teams (from figcaptions)
-    const teams = [...card.matchAll(/<figcaption>([^<]+)<\/figcaption>/g)].map(m => m[1].trim());
+    const teams = [...card.matchAll(/<figcaption[^>]*>([\s\S]+?)<\/figcaption>/gi)].map(m => m[1].replace(/<[^>]+>/g, "").trim());
     if (teams.length < 2) continue;
     const home = teams[0];
     const away = teams[1];
 
     // 3. Extract Competition (first <p> in footer)
-    const footerParts = card.split('<footer>')[1]?.split('</footer>')[0] || "";
-    const pTags = footerParts.match(/<p>([^<]+)<\/p>/g) || [];
-    const competition = (pTags[0] || "").replace(/<p>|<\/p>/g, "").trim();
+    const footerParts = card.split(/<footer[^>]*>/i)[1]?.split(/<\/footer>/i)[0] || "";
+    const pTags = [...footerParts.matchAll(/<p[^>]*>([\s\S]+?)<\/p>/gi)].map(m => m[1].replace(/<[^>]+>/g, "").trim());
+    const competition = (pTags[0] || "").trim();
 
     // 4. Extract Time & Location (second <p> in footer: "19:15 | Víkingsvöllur")
-    const timeLoc = (pTags[1] || "").replace(/<p>|<\/p>/g, "").trim();
+    const timeLoc = (pTags[1] || "").trim();
     let time = "00:00";
     let location = "";
     if (timeLoc.includes("|")) {
